@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
-      background: #f0ffff;
+      background: #fff0ff;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -35,7 +35,7 @@
     button {
       width: 100%;
       padding: 10px;
-      background: #90d7ec;
+      background: #faa1f2;
       border: none;
       border-radius: 10px;
       cursor: pointer;
@@ -47,14 +47,16 @@
   </style>
 </head>
 <body>
-  <h1>販売個数記録サイト</h1>
+  <h1>販売個数記録</h1>
+  <h4>下記3つを選択/入力し、送信ボタンを押してください。遅延が発生する可能性もありますが、送信ボタンは1回のみ押すようにしてください。</h4>
+    <p></p>
   <form id="salesForm">
     <label>商品を選択：</label>
     <select name="item" required>
-      <option value="ホットドッグ">ホットドッグ</option>
-      <option value="フランクフルト">フランクフルト</option>
-      <option value="まかないホットドッグ">まかないホットドッグ</option>
-      <option value="まかないフランクフルト">まかないフランクフルト</option>
+      <option value="チケット(大人)">チケット(大人)</option>
+      <option value="チケット(学生)">チケット(学生)</option>
+      <option value="おかわり(大人)">おかわり(大人)</option>
+      <option value="おかわり(学生)">おかわり(学生)</option>
     </select>
 
     <label>支払い方法：</label>
@@ -69,14 +71,9 @@
     
     <button type="submit">送信</button>
   </form>
-
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbysL3c85rC_lyOtTI56NIcycJIKEOCA302dHI9zSOGITgVPrg9Zqw7hL1DEuZ97dL9T/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbw5WKGASxjtRuAHBSaNgPtfKwP5fIKTiTSflhuHs3LkvPFy2CMzCVoSw2ySzkouS0ByvQ/exec";
     
-    function delay(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
     document.getElementById('salesForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -91,10 +88,8 @@
 
         const result = await res.json();
         
-        // GASが 'queued' または 'success' を返した場合
-        if (result.result === 'success' || result.result === 'queued') {
-          await delay(1000); 
-          alert('送信が完了しました（記録はバックグラウンドで実行されます）');
+        if (result.result === 'success') {
+          alert('送信しました');
           form.reset(); 
         } else {
           alert('送信に失敗しました: ' + (result.message || ''));
@@ -104,6 +99,6 @@
         console.error(err);
       }
     });
-  </script>
+</script>
 </body>
 </html>
